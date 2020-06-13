@@ -38,12 +38,14 @@
       if (event.keyCode === 13) {
         event.preventDefault();
         setListItem(input.value);
+        $(this).val('');
       }
     });
     
-    const setGrey = function(cb_id, label_id){
+    const setGrey = function(cb_id, label_id, li_id){
         if($(`#${cb_id}`).is(':checked')){
           $(`#${label_id}`).css('color','#AAAAAA');
+          $("#holdListItems").find(`#${li_id}`).appendTo("#holdListItems");
         } else {
           $(`#${label_id}`).css('color','#000000')
         }
@@ -54,10 +56,12 @@
       let li = $('<li></li>');
       li.attr("id", "li_"+counter);
       $("#holdListItems").append(li);
-      let cb = $('#li_'+counter).append(`<input type="checkbox" id="cb_${counter}" />`);
+      let cb = $(`<input type="checkbox" id="cb_${counter}" />`);
+      cb.addClass("cb");
+      $('#li_'+counter).append(cb);
       let label = $('<label />', { 'for': `cb_${counter}`, text: get_text, id: `label_${counter}` }).appendTo('#li_'+counter);
       $(cb).on('change', function(event) {
-        setGrey(event.target.id, label.attr("id"));
+        setGrey(event.target.id, label.attr("id"), li.attr("id"));
       });
       counter++;
     };
