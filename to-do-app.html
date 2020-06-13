@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>jQuery To-Do Application</title>
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<main>
+  <div class="container">
+    <div class="page-header"> 
+      <h1>jQuery To-Do Application</h1>
+    </div>
+
+    <form>
+      <input id="get_items" class="form-control" type="text" placeholder="Add an item...">
+    </form>
+
+    <ul id="holdListItems">
+      <!-- To do items get added dynamically here -->
+    </ul>
+  </div>
+</main>
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script>
+// INSERT CODE HERE
+  $(document).ready(function(){
+    let counter = 1;
+    let input = document.getElementById("get_items");
+
+    $("#get_items").keydown(function(event) {
+      if (event.keyCode === 13) {
+        event.preventDefault();
+        setListItem(input.value);
+      }
+    });
+    
+    const setGrey = function(cb_id, label_id){
+        if($(`#${cb_id}`).is(':checked')){
+          $(`#${label_id}`).css('color','#AAAAAA');
+        } else {
+          $(`#${label_id}`).css('color','#000000')
+        }
+      // id.style.color = $('#'+id).checked ? '#AAAAAA' : '#000000';
+    };
+
+    const setListItem = function(get_text){
+      let li = $('<li></li>');
+      li.attr("id", "li_"+counter);
+      $("#holdListItems").append(li);
+      let cb = $('#li_'+counter).append(`<input type="checkbox" id="cb_${counter}" />`);
+      let label = $('<label />', { 'for': `cb_${counter}`, text: get_text, id: `label_${counter}` }).appendTo('#li_'+counter);
+      $(cb).on('change', function(event) {
+        setGrey(event.target.id, label.attr("id"));
+      });
+      counter++;
+    };
+  });
+
+</script>
+</body>
+</html>
